@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recepcionista IA · Monterrey</title>
+<meta name="description" content="Una recepcionista con inteligencia artificial para negocios con cita en Monterrey: contesta tu WhatsApp al momento, agenda citas con la disponibilidad real de tu equipo y te mantiene al tanto.">
+<meta property="og:title" content="Recepcionista IA">
+<meta property="og:description" content="Tu WhatsApp contesta al momento, agenda citas y avisa a tu equipo. Para salones y negocios con cita en Monterrey.">
+<meta property="og:locale" content="es_MX">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0f3d3e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230f3d3e'/%3E%3Cpath d='M18 20h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-9 7v-7h-3a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z' fill='%23f4b860'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf8f3;
+    --surface: #ffffff;
+    --surface-2: #f3eee6;
+    --ink: #17211f;
+    --ink-soft: #4b5754;
+    --line: #e4ddd2;
+    --brand: #0f3d3e;
+    --brand-ink: #ffffff;
+    --accent: #e8a33d;
+    --accent-soft: #fbe9cc;
+    --bubble-in: #ffffff;
+    --bubble-out: #dcf3e4;
+    --chat-bg: #efe7dc;
+    --shadow: 0 18px 40px -18px rgba(15, 61, 62, .35);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1514;
+      --surface: #172120;
+      --surface-2: #1c2826;
+      --ink: #eef2f0;
+      --ink-soft: #a9b6b2;
+      --line: #2a3634;
+      --brand: #8fd1c4;
+      --brand-ink: #0f1514;
+      --accent: #f4b860;
+      --accent-soft: #3a2f1d;
+      --bubble-in: #22302e;
+      --bubble-out: #1f4a3d;
+      --chat-bg: #121b1a;
+      --shadow: 0 18px 40px -18px rgba(0, 0, 0, .7);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  /* Encabezado */
+  header { padding: 22px 0; }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: -.01em; text-decoration: none; }
+  .brand svg { width: 34px; height: 34px; flex: none; }
+  .brand .logo-bg { fill: var(--brand); }
+  .brand .logo-fg { fill: var(--accent); }
+  header nav a { font-size: 15px; font-weight: 600; color: var(--ink-soft); text-decoration: none; }
+  header nav a:hover { color: var(--ink); }
+
+  /* Portada */
+  .hero { padding: 36px 0 72px; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+  .kicker {
+    display: inline-block; font-size: 14px; font-weight: 700; color: var(--brand);
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; margin-bottom: 20px;
+  }
+  h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.08; letter-spacing: -.03em; margin: 0 0 20px; font-weight: 800; }
+  h1 em { font-style: normal; color: var(--brand); }
+  .lead { font-size: 19px; color: var(--ink-soft); margin: 0 0 28px; max-width: 34em; }
+  .points { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .points li { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; }
+  .points li::before {
+    content: ""; flex: none; width: 20px; height: 20px; margin-top: 3px; border-radius: 50%;
+    background: var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%23c47d14' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;
+  }
+
+  /* Teléfono con la plática de ejemplo */
+  .phone {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow);
+    overflow: hidden; max-width: 380px; width: 100%; justify-self: center;
+  }
+  .phone-top { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: var(--brand); color: var(--brand-ink); }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-weight: 800; color: #17211f; flex: none; }
+  .phone-top b { display: block; font-size: 15px; line-height: 1.2; }
+  .phone-top span { font-size: 12.5px; opacity: .85; }
+  .chat { background: var(--chat-bg); padding: 18px 14px 20px; display: grid; gap: 8px; }
+  .msg { max-width: 84%; padding: 8px 12px 6px; border-radius: 14px; font-size: 14.5px; line-height: 1.45; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+  .msg time { display: block; text-align: right; font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+  .in { background: var(--bubble-in); justify-self: start; border-top-left-radius: 4px; }
+  .out { background: var(--bubble-out); justify-self: end; border-top-right-radius: 4px; }
+  .phone-note { font-size: 13px; color: var(--ink-soft); text-align: center; padding: 10px 16px 14px; background: var(--surface); }
+
+  /* Secciones */
+  section.block { padding: 72px 0; }
+  section.alt { background: var(--surface-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  h2 { font-size: clamp(27px, 3.6vw, 38px); line-height: 1.15; letter-spacing: -.02em; margin: 0 0 14px; font-weight: 800; }
+  .section-intro { color: var(--ink-soft); font-size: 18px; max-width: 40em; margin: 0 0 40px; }
+
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+  .card h3 { margin: 12px 0 6px; font-size: 18px; line-height: 1.3; letter-spacing: -.01em; }
+  .card p { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+  .icon { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); display: grid; place-items: center; }
+  .icon svg { width: 24px; height: 24px; stroke: var(--ink); fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Quién escribe */
+  .roles { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); }
+  .role { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .role-tag { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--brand); }
+  .role p.desc { margin: 0; color: var(--ink-soft); font-size: 15.5px; }
+  .mini { background: var(--chat-bg); border-radius: 14px; padding: 12px; display: grid; gap: 6px; margin-top: auto; }
+  .mini .msg { font-size: 13.5px; max-width: 92%; }
+
+  /* Reglas */
+  .rules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 40px; list-style: none; padding: 0; margin: 0; }
+  .rules li { padding-left: 30px; position: relative; }
+  .rules li b { display: block; }
+  .rules li span { color: var(--ink-soft); font-size: 15.5px; }
+  .rules li::before {
+    content: ""; position: absolute; left: 0; top: 5px; width: 18px; height: 18px; border-radius: 6px; background: var(--brand);
+  }
+
+  /* Pasos */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: paso; list-style: none; padding: 0; margin: 0; }
+  .steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px; counter-increment: paso; }
+  .steps li::before {
+    content: counter(paso); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+    background: var(--brand); color: var(--brand-ink); font-weight: 800; margin-bottom: 12px;
+  }
+  .steps b { display: block; font-size: 18px; margin-bottom: 4px; }
+  .steps span { color: var(--ink-soft); font-size: 15.5px; }
+
+  /* Cierre */
+  .closing { text-align: center; padding: 80px 0; }
+  .closing .box { background: var(--brand); color: var(--brand-ink); border-radius: 26px; padding: 48px 28px; }
+  .closing h2 { color: inherit; }
+  .closing p { margin: 0 auto; max-width: 34em; opacity: .9; font-size: 18px; }
+
+  footer { padding: 28px 0 40px; color: var(--ink-soft); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; }
+
+  @media (max-width: 880px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 40px; }
+    .grid, .roles, .steps { grid-template-columns: 1fr 1fr; }
+    .roles .role:last-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 620px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 16px; }
+    .hero { padding: 16px 0 56px; }
+    .lead { font-size: 17.5px; }
+    section.block { padding: 56px 0; }
+    .grid, .roles, .steps, .rules { grid-template-columns: 1fr; }
+    .roles .role:last-child { grid-column: auto; }
+    header nav { display: none; }
+    .closing { padding: 56px 0; }
+    .closing .box { padding: 36px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Recepcionista IA, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect class="logo-bg" width="64" height="64" rx="16"/><path class="logo-fg" d="M18 20h28a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-9 7v-7h-3a4 4 0 0 1-4-4V24a4 4 0 0 1 4-4z"/></svg>
+      Recepcionista IA
+    </a>
+    <nav><a href="#como-funciona">Cómo funciona</a></nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="kicker">Para negocios con cita en Monterrey</span>
+        <h1>Tu WhatsApp contesta <em>al momento</em>, agenda y avisa a tu equipo.</h1>
+        <p class="lead">Una recepcionista con inteligencia artificial que atiende el WhatsApp de tu negocio de día y de noche. Contesta precios y horarios, agenda con la disponibilidad real de cada persona y te deja ver todo lo que pasa.</p>
+        <ul class="points">
+          <li>Contesta en segundos, aunque sean las 11 de la noche.</li>
+          <li>Agenda, cambia y cancela citas sin empalmes.</li>
+          <li>Reconoce si le escribe un cliente, alguien del equipo o la dueña.</li>
+        </ul>
+      </div>
+
+      <figure class="phone" style="margin:0" aria-label="Ejemplo de una plática por WhatsApp con la recepcionista">
+        <div class="phone-top">
+          <div class="avatar" aria-hidden="true">S</div>
+          <div><b>Tu salón</b><span>en línea</span></div>
+        </div>
+        <div class="chat">
+          <div class="msg in">Hola, ¿cuánto cuesta el corte de dama? ¿Tienen lugar mañana?<time>10:42 p. m.</time></div>
+          <div class="msg out">¡Hola! El corte de dama cuesta $380 y dura una hora. Mañana tengo libre a las 11:00 con Sofía o a las 4:30 con Mariana. ¿Cuál te acomoda?<time>10:42 p. m.</time></div>
+          <div class="msg in">4:30 porfa 🙏<time>10:43 p. m.</time></div>
+          <div class="msg out">Listo, quedó tu cita mañana a las 4:30 con Mariana. ¡Te esperamos!<time>10:43 p. m.</time></div>
+        </div>
+        <figcaption class="phone-note">Ejemplo. Los precios y horarios salen de la agenda de cada negocio.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block alt" id="como-funciona">
+    <div class="wrap">
+      <h2>Lo que hace por tu negocio</h2>
+      <p class="section-intro">Cuando un mensaje tarda horas en contestarse, el cliente ya le escribió a otro lugar. La recepcionista contesta en el momento, con los datos de tu negocio.</p>
+      <div class="grid">
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Contesta al momento</h3>
+          <p>Servicios, precios, horarios y sucursales, a cualquier hora y sin dejar a nadie esperando.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></div>
+          <h3>Agenda sin empalmes</h3>
+          <p>Ofrece solo los horarios libres de cada persona del equipo. También cambia y cancela citas.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 20a2 2 0 0 0 3.4 0"/></svg></div>
+          <h3>Avisa a tu equipo</h3>
+          <p>Cada quien se entera de sus citas nuevas, cambios y cancelaciones por WhatsApp.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/></svg></div>
+          <h3>Tú apruebas lo importante</h3>
+          <p>Si alguien del equipo pide bloquear su agenda, la dueña lo aprueba antes de mover citas de clientes.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+          <h3>Te mantiene al tanto</h3>
+          <p>Pregúntale cómo va el día o la semana y te responde con las citas y los números reales.</p>
+        </div>
+        <div class="card">
+          <div class="icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.7 2.6 3 5.2"/></svg></div>
+          <h3>Una persona cuando hace falta</h3>
+          <p>Si no sabe algo, no adivina: le pasa la pregunta a alguien del negocio y le contesta al cliente con lo que le digan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>Un mismo WhatsApp para todos</h2>
+      <p class="section-intro">La recepcionista sabe quién le escribe por su número y a cada quien le permite solo lo que le toca.</p>
+      <div class="roles">
+        <div class="role">
+          <span class="role-tag">Clientes</span>
+          <p class="desc">Preguntan, agendan y cambian sus citas.</p>
+          <div class="mini">
+            <div class="msg in">¿Me pasas mi cita al jueves?</div>
+            <div class="msg out">Claro. El jueves tengo 12:00 o 5:30 con la misma estilista. ¿Cuál prefieres?</div>
+          </div>
+        </div>
+        <div class="role">
+          <span class="role-tag">Equipo</span>
+          <p class="desc">Consulta su agenda y pide bloquear horas.</p>
+          <div class="mini">
+            <div class="msg in">Mañana no puedo de 3 a 5.</div>
+            <div class="msg out">Tienes una cita a las 4. Le pedí a la dueña que lo apruebe y te aviso.</div>
+          </div>
+        </div>
+        <div class="role">
+          <span class="role-tag">Dueña</span>
+          <p class="desc">Aprueba, cierra días y pide resúmenes.</p>
+          <div class="mini">
+            <div class="msg in">¿Cómo vamos hoy?</div>
+            <div class="msg out">Hoy hay 14 citas en las dos sucursales. Quedan libres 3 horarios en la tarde.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap">
+      <h2>Clara y honesta con tus clientes</h2>
+      <p class="section-intro">Habla con un tono cercano, como tu negocio, y sigue reglas fijas.</p>
+      <ul class="rules">
+        <li><b>No inventa.</b><span>Los precios, horarios y citas salen de tu agenda, no de la imaginación de la IA.</span></li>
+        <li><b>Dice que es una asistente virtual.</b><span>Si alguien le pregunta si es un robot, lo confirma.</span></li>
+        <li><b>Solo habla de tu negocio.</b><span>Si le piden otra cosa, regresa con amabilidad a lo que sí puede ayudar.</span></li>
+        <li><b>Respeta a quien ya no quiere mensajes.</b><span>Si un cliente pide que ya no le escriban, deja de hacerlo.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>Cómo empieza</h2>
+      <p class="section-intro">Nosotros la configuramos contigo. No tienes que instalar nada.</p>
+      <ol class="steps">
+        <li><b>Platicamos</b><span>Vemos cómo atiendes hoy, tus servicios, precios, horarios, sucursales y equipo.</span></li>
+        <li><b>La configuramos</b><span>Cargamos tu información y la probamos contigo antes de que hable con tus clientes.</span></li>
+        <li><b>Empieza a atender</b><span>Contesta tu WhatsApp y tú ves todo lo que pasa. Si algo se ajusta, lo cambiamos.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="wrap">
+      <div class="box">
+        <h2>Estamos preparando el primer piloto en Monterrey</h2>
+        <p>Trabajamos con salones de belleza y otros negocios que viven de su agenda. Muy pronto abriremos lugares para más negocios.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Recepcionista IA · Monterrey, Nuevo León, México</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>
